@@ -1,0 +1,1 @@
+"""Adhikar FastAPI Endpoints."""

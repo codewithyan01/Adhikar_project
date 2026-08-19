@@ -1,0 +1,236 @@
+"""Rights Knowledge Base Ingestion Script for Adhikar.
+
+Ingests verified, official government legal-aid sources into:
+1. Structured JSON output: /data/rights_kb_processed/rights_kb.json
+2. ChromaDB collection: 'rights_kb' in /data/chroma_db/
+"""
+
+import os
+import json
+import logging
+from pathlib import Path
+from typing import List, Dict, Any
+import chromadb
+from chromadb.config import Settings
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+PROCESSED_DIR = BASE_DIR / "data" / "rights_kb_processed"
+CHROMA_DIR = BASE_DIR / "data" / "chroma_db"
+
+PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+
+
+RIGHTS_ARTICLES: List[Dict[str, Any]] = [
+    # --- 1. CONSUMER DISPUTES ---
+    {
+        "id": "cpa-core-rights",
+        "category": "consumer",
+        "title": "Six Fundamental Consumer Rights under Consumer Protection Act, 2019",
+        "act_reference": "Consumer Protection Act, 2019 (Section 2(9))",
+        "source_url": "https://consumerhelpline.gov.in/public/consumerrights",
+        "authority": "Central Consumer Protection Authority (CCPA) / Ministry of Consumer Affairs",
+        "caveat": None,
+        "content": (
+            "Under the Consumer Protection Act 2019, every consumer in India is guaranteed 6 fundamental rights: "
+            "1. Right to Safety: Protection against goods and services that are hazardous to life and property. "
+            "2. Right to Information: Right to be informed about the quality, quantity, potency, purity, standard, and price of goods or services to protect against unfair trade practices. "
+            "3. Right to Choice: Right to be assured access to a variety of goods and services at competitive prices. "
+            "4. Right to be Heard: Right to be heard and assured that consumer interests will receive due consideration in appropriate forums. "
+            "5. Right to Redressal: Right to seek legal remedies against unfair trade practices, exploitative restrictive trade practices, or defective goods and deficient services. "
+            "6. Right to Consumer Education: Right to acquire the knowledge and skill to be an informed consumer throughout life."
+        ),
+        "key_remedies": "File an online grievance on the National Consumer Helpline (NCH Portal / Toll-free 1915) or escalate to Consumer Commission via e-Daakhil."
+    },
+    {
+        "id": "cpa-e-commerce-refunds",
+        "category": "consumer",
+        "title": "E-Commerce Consumer Rights, Defective Products, and Mandatory Refund Rules",
+        "act_reference": "Consumer Protection (E-Commerce) Rules, 2020",
+        "source_url": "https://consumerhelpline.gov.in/public/about",
+        "authority": "National Consumer Helpline (NCH) / INGRAM Portal",
+        "caveat": None,
+        "content": (
+            "Under the Consumer Protection (E-Commerce) Rules 2020: "
+            "E-commerce entities cannot refuse to take back goods, withdraw services, or refuse refunds if goods are defective, deficient, spurious, or delivered late. "
+            "No e-commerce platform shall impose cancellation charges on consumers unless similar charges are borne by the platform if they cancel the purchase unilaterally. "
+            "Platforms must display the legal name of the seller, geographical address, customer care numbers, grievance officer details, and country of origin. "
+            "Every grievance must be acknowledged within 48 hours and redressed within one month of receipt."
+        ),
+        "key_remedies": "Register grievance on NCH INGRAM portal (consumerhelpline.gov.in) with order ID and invoice copy. If unresolved in 30 days, file on e-Daakhil."
+    },
+    {
+        "id": "cpa-consumer-commissions-edaakhil",
+        "category": "consumer",
+        "title": "Three-Tier Consumer Dispute Redressal Commissions and E-Daakhil Online Filing",
+        "act_reference": "Consumer Protection Act, 2019 (Sections 28, 42, 53)",
+        "source_url": "https://edaakhil.nic.in",
+        "authority": "National Consumer Disputes Redressal Commission (NCDRC)",
+        "caveat": None,
+        "content": (
+            "When pre-litigation resolution through NCH fails, consumers can institute formal claims in Consumer Commissions via E-Daakhil (edaakhil.nic.in): "
+            "1. District Commission: Claims up to ₹50 Lakhs. "
+            "2. State Commission: Claims exceeding ₹50 Lakhs up to ₹2 Crores. "
+            "3. National Commission (NCDRC): Claims exceeding ₹2 Crores. "
+            "Consumers can file online from their place of residence or workplace without mandatory advocate representation. No court fee is charged for claims up to ₹5 Lakhs."
+        ),
+        "key_remedies": "File digital complaint on edaakhil.nic.in with statement of facts, invoice, and demand for compensation + refund."
+    },
+
+    # --- 2. TENANT DISPUTES ---
+    {
+        "id": "mta-security-deposit-caps",
+        "category": "tenant",
+        "title": "Security Deposit Ceilings under Model Tenancy Act, 2021",
+        "act_reference": "Model Tenancy Act, 2021 (Section 11)",
+        "source_url": "https://mohua.gov.in/upload/uploadfiles/files/Model_Tenancy_Act_English.pdf",
+        "authority": "Ministry of Housing and Urban Affairs (MoHUA)",
+        "caveat": "The Model Tenancy Act is a model/template law. This provision applies strictly if your State Legislature has enacted the MTA or corresponding state rent regulations.",
+        "content": (
+            "Under Section 11 of the Model Tenancy Act, 2021: "
+            "1. Residential Premises: The security deposit to be paid by the tenant shall not exceed a maximum of TWO MONTHS' rent. "
+            "2. Non-Residential (Commercial) Premises: The security deposit shall not exceed a maximum of SIX MONTHS' rent. "
+            "The security deposit shall be refunded to the tenant on the date of handing over vacant possession of the premises after making lawful deductions for unpaid rent or tenant-caused damages."
+        ),
+        "key_remedies": "If landlord unlawfully withholds deposit, submit a petition before the local Rent Authority / Rent Court constituted under the Tenancy Act."
+    },
+    {
+        "id": "mta-rent-revision-notice",
+        "category": "tenant",
+        "title": "Mandatory 90-Day Notice Period for Rent Increase and Unilateral Eviction Protection",
+        "act_reference": "Model Tenancy Act, 2021 (Sections 9, 21, 22)",
+        "source_url": "https://mohua.gov.in/upload/uploadfiles/files/Model_Tenancy_Act_English.pdf",
+        "authority": "Ministry of Housing and Urban Affairs (MoHUA)",
+        "caveat": "Applies strictly in States/UTs that have formally notified and adopted the Model Tenancy Act, 2021.",
+        "content": (
+            "Under Section 9 of the Model Tenancy Act, 2021: "
+            "The landlord must give a written notice to the tenant at least NINETY (90) DAYS before the revised rent is to take effect. "
+            "The landlord cannot cut off or withhold essential supply or services (water, electricity, access to common areas) to the premises. "
+            "No landlord can arbitrarily evict a tenant during the currency of an agreement without a formal order from the Rent Court on grounds of non-payment of rent for 2 consecutive months or unauthorized sub-letting."
+        ),
+        "key_remedies": "File an emergency application before the Rent Authority for restoration of withheld basic amenities (water/power) with daily penalty on landlord."
+    },
+    {
+        "id": "mta-maintenance-responsibilities",
+        "category": "tenant",
+        "title": "Division of Repair and Maintenance Obligations Between Landlord and Tenant",
+        "act_reference": "Model Tenancy Act, 2021 (Section 15 & Second Schedule)",
+        "source_url": "https://mohua.gov.in/upload/uploadfiles/files/Model_Tenancy_Act_English.pdf",
+        "authority": "Ministry of Housing and Urban Affairs (MoHUA)",
+        "caveat": "Enforceable subject to State adoption of MTA and the terms registered in the digital tenancy agreement.",
+        "content": (
+            "Under the Model Tenancy Act 2021, responsibilities for maintenance are clearly segregated: "
+            "Landlord Obligations: Structural repairs, major whitewashing/painting, external plumbing/drainage, electrical wiring overhaul, and roof waterproofing. "
+            "Tenant Obligations: Routine internal maintenance, minor electrical fuse/switch replacements, tap washers, socket repairs, and cleaning of internal premises. "
+            "If the landlord refuses structural repairs after 15 days written notice, the tenant can carry out repairs and deduct up to 50% of the monthly rent."
+        ),
+        "key_remedies": "Issue 15-day formal repair notice; carry out essential repair and adjust expenditure from subsequent monthly rent up to statutory limit."
+    },
+
+    # --- 3. WORKPLACE DISPUTES ---
+    {
+        "id": "workplace-wage-payment-timelines",
+        "category": "workplace",
+        "title": "Statutory Wage Payment Timelines and Unlawful Deduction Protections",
+        "act_reference": "Code on Wages, 2019 / Payment of Wages Act, 1936 (Sections 3, 7, 15)",
+        "source_url": "https://shramsuvidha.gov.in/home",
+        "authority": "Ministry of Labour & Employment / Chief Labour Commissioner",
+        "caveat": "Jurisdiction split: Central-sphere establishments (Railways, Mines, Banks, Major Ports, Central PSUs) fall under Chief Labour Commissioner (Central); private firms/state factories fall under State Labour Commissioner.",
+        "content": (
+            "Under Indian labour law: "
+            "1. Wage Period & Timelines: Wages must be paid within 7 days of the end of the wage period (for establishments with under 1,000 workers) or within 10 days (for other establishments). "
+            "2. Mode of Payment: Mandatory payment via bank transfer, cheque, or electronic direct credit. "
+            "3. Deductions: Employers cannot make arbitrary deductions, fines, or salary cuts without recorded inquiry. Total deductions cannot exceed 50% of total wages in any wage period. "
+            "4. Full & Final Settlement: On termination/resignation, all undisputed dues must be settled within 2 working days."
+        ),
+        "key_remedies": "Lodge online complaint on Shram Suvidha (shramsuvidha.gov.in) or submit Form-A claim before the Regional Labour Commissioner / Payment of Wages Authority."
+    },
+    {
+        "id": "workplace-eshram-unorganised-workers",
+        "category": "workplace",
+        "title": "Rights and Grievance Mechanism for Unorganised & Gig Workers via e-Shram",
+        "act_reference": "Unorganised Workers' Social Security Act, 2008 / e-Shram National Framework",
+        "source_url": "https://eshram.gov.in/grievance",
+        "authority": "Ministry of Labour & Employment",
+        "caveat": None,
+        "content": (
+            "Unorganised, informal, and gig/platform workers registered on the e-Shram portal possess statutory entitlement to: "
+            "1. Universal Social Security: Coverage under PM Suraksha Bima Yojana (accidental death/permanent disability cover of ₹2 Lakhs). "
+            "2. Portability of Social Protection: Access to state migrant welfare funds across India via 12-digit UAN. "
+            "3. Grievance Redressal: Dedicated portal (eshram.gov.in/grievance) for non-payment of minimum wages, refusal of benefits, or unlawful employer exploitation."
+        ),
+        "key_remedies": "Lodge grievance on eshram.gov.in/grievance with 12-digit UAN number or call national toll-free helpline 14434."
+    },
+    {
+        "id": "workplace-industrial-disputes-conciliation",
+        "category": "workplace",
+        "title": "Industrial Disputes, Unlawful Retrenchment, and Conciliation Procedure",
+        "act_reference": "Industrial Disputes Act, 1947 / Industrial Relations Code, 2020",
+        "source_url": "https://clc.gov.in/clc/online-services",
+        "authority": "Office of the Chief Labour Commissioner (Central) / State Labour Conciliation Officers",
+        "caveat": "Determine whether employer is in Central Sphere (Banks, Telecom, Airports, Mines) or State Sphere (Local shops, state factories) to direct conciliation notice.",
+        "content": (
+            "Under the Industrial Disputes legal framework: "
+            "1. Retrenchment / Termination: A workman with over 1 year continuous service cannot be terminated without 1 month written notice (or wages in lieu) plus retrenchment compensation equal to 15 days average pay for every completed year of service. "
+            "2. Statutory Conciliation: Aggrieved workers can initiate conciliation before the Conciliation Officer / Assistant Labour Commissioner. "
+            "3. Protection during Conciliation: Management cannot alter conditions of service or dismiss employees while conciliation proceedings are pending."
+        ),
+        "key_remedies": "File dispute petition on clc.gov.in (for central sphere) or State Labour Office; participate in conciliation; obtain Failure of Conciliation (FOC) certificate for Labour Court adjudication."
+    }
+]
+
+
+def ingest_rights_kb():
+    """Processes rights explainers, saves JSON, and indexes into ChromaDB."""
+    logger.info(f"Ingesting {len(RIGHTS_ARTICLES)} legal-aid rights explainers...")
+
+    # 1. Write structured JSON
+    json_path = PROCESSED_DIR / "rights_kb.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(RIGHTS_ARTICLES, f, indent=2, ensure_ascii=False)
+    logger.info(f"Saved processed JSON to {json_path}")
+
+    # 2. Embed into ChromaDB collection 'rights_kb'
+    client = chromadb.PersistentClient(path=str(CHROMA_DIR), settings=Settings(anonymized_telemetry=False))
+    collection = client.get_or_create_collection(name="rights_kb")
+
+    # Clear existing to ensure idempotency
+    existing_ids = collection.get()["ids"]
+    if existing_ids:
+        collection.delete(ids=existing_ids)
+
+    documents = []
+    metadatas = []
+    ids = []
+
+    for item in RIGHTS_ARTICLES:
+        text_chunk = f"Title: {item['title']}\nAct: {item['act_reference']}\nCategory: {item['category']}\nAuthority: {item['authority']}\n\nContent:\n{item['content']}\n\nKey Remedies:\n{item['key_remedies']}"
+        
+        meta = {
+            "rights_id": item["id"],
+            "category": item["category"],
+            "title": item["title"],
+            "act_reference": item["act_reference"],
+            "authority": item["authority"],
+            "source_url": item["source_url"],
+            "caveat": item.get("caveat") or ""
+        }
+
+        documents.append(text_chunk)
+        metadatas.append(meta)
+        ids.append(f"rights_{item['id']}")
+
+    collection.add(
+        documents=documents,
+        metadatas=metadatas,
+        ids=ids
+    )
+
+    logger.info(f"Successfully indexed {len(ids)} rights chunks into ChromaDB collection 'rights_kb'.")
+
+
+if __name__ == "__main__":
+    ingest_rights_kb()

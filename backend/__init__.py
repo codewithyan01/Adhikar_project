@@ -1,0 +1,1 @@
+"""Adhikar Backend Package."""

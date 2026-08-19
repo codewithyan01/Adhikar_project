@@ -1,0 +1,78 @@
+{
+  "_notes": "Curated starter directory for the RTI Drafting Agent (Module C). Hand-built, not scraped. Covers the most common citizen-grievance categories for a hackathon demo scope. jurisdiction_level tells the routing step which RTI portal applies: 'central' authorities are filed via the central RTI Online portal; 'state'/'local' authorities are filed via the relevant state's own RTI portal or in person, since India has no single unified RTI portal across all levels of government -- this is exactly why ADR-006 requires human confirmation before routing, not silent automation.",
+  "central_rti_portal": "https://rtionline.gov.in",
+  "central_rti_portal_note": "Central RTI Online portal -- only for RTI applications to central government ministries/departments/PSUs. State and local body RTIs must go through that state's own portal or be filed offline.",
+  "departments": [
+    {
+      "id": "pds-food-supplies",
+      "name": "Food, Civil Supplies & Consumer Affairs Department (State)",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["ration card issues", "PDS shop irregularities", "subsidized foodgrain non-delivery"],
+      "notes": "File via the respective state's Food & Civil Supplies department / state RTI portal."
+    },
+    {
+      "id": "land-revenue",
+      "name": "Revenue Department / Tehsildar / Land Records Office (State)",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["land record discrepancies", "mutation delays", "property tax records"],
+      "notes": "Routed to the district Tehsildar/Revenue office; varies by state."
+    },
+    {
+      "id": "municipal-corporation",
+      "name": "Municipal Corporation / Urban Local Body",
+      "jurisdiction_level": "local",
+      "typical_use_cases": ["sanitation, water supply, roads, building permits, property tax at city level"],
+      "notes": "Route to the specific city's municipal corporation; not centrally filed."
+    },
+    {
+      "id": "education-dept-state",
+      "name": "Department of School Education (State)",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["school admission disputes", "scholarship non-disbursal", "mid-day meal scheme queries"],
+      "notes": "State education department; central RTI portal only applies for CBSE/central institutions."
+    },
+    {
+      "id": "labour-commissioner",
+      "name": "Office of the Labour Commissioner (Central or State)",
+      "jurisdiction_level": "central_or_state",
+      "typical_use_cases": ["wage disputes", "workplace safety complaints", "unregistered establishment issues"],
+      "notes": "Central Chief Labour Commissioner (clc.gov.in) for central-sphere establishments; state Labour Commissioner for state-sphere establishments -- confirm which with the user."
+    },
+    {
+      "id": "police-department",
+      "name": "State Police Department",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["FIR status queries", "police inaction complaints"],
+      "notes": "Always state-level; route to the relevant state police RTI cell."
+    },
+    {
+      "id": "health-dept-state",
+      "name": "Department of Health & Family Welfare (State)",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["public hospital service issues", "health scheme (e.g. Ayushman Bharat implementation) queries"],
+      "notes": "State health department; central RTI portal applies only for central health institutions (e.g. AIIMS)."
+    },
+    {
+      "id": "electricity-board",
+      "name": "State Electricity Distribution Company (DISCOM)",
+      "jurisdiction_level": "state",
+      "typical_use_cases": ["billing disputes", "connection delays", "outage complaints"],
+      "notes": "Most DISCOMs are state PSUs with their own public information officer; not filed via central portal."
+    },
+    {
+      "id": "consumer-affairs-central",
+      "name": "Department of Consumer Affairs (Central)",
+      "jurisdiction_level": "central",
+      "typical_use_cases": ["policy-level consumer protection queries (not individual disputes -- see Rights Navigator / NCH for that)"],
+      "notes": "Filed via rtionline.gov.in. Individual consumer complaints should go to National Consumer Helpline instead of RTI -- flag this distinction to the user."
+    },
+    {
+      "id": "epfo",
+      "name": "Employees' Provident Fund Organisation (EPFO)",
+      "jurisdiction_level": "central",
+      "typical_use_cases": ["PF withdrawal delays", "employer non-deposit of PF"],
+      "notes": "Central body, filed via rtionline.gov.in."
+    }
+  ],
+  "routing_guidance_for_agent": "Given a user's plain-language grievance: classify into one of the above categories, return the matching entry plus a confidence score. If jurisdiction_level is 'state' or 'local', you must also determine the user's state/city (ask if not already in their profile) before generating the final application, since state RTI portals differ. If confidence is below your chosen threshold, or the grievance doesn't clearly fit any listed category, present the top 2-3 candidates to the user for confirmation rather than picking one automatically -- see ADR-006."
+}

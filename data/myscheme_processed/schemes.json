@@ -1,0 +1,209 @@
+[
+  {
+    "id": "pm-kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+    "eligibility_text": "All landholding farmer families having cultivable landholding in their names are eligible. Farmers must be Indian citizens aged 18 to 75 years. Exclusions: Institutional landholders, farmer families holding constitutional posts, serving or retired officers/employees of state or central government, professionals (doctors, engineers, lawyers, CA), and individuals who paid income tax in last assessment year.",
+    "benefits": "Financial benefit of ₹6,000 per year is provided to eligible farmer families in three equal 4-monthly installments of ₹2,000 directly into their bank accounts via DBT.",
+    "application_process": "1. Visit the official PM-KISAN portal (pmkisan.gov.in) or Common Service Centre (CSC).\n2. Click on 'New Farmer Registration'.\n3. Enter Aadhaar number and State.\n4. Fill in land ownership details, survey number, and bank account info (IFSC code).\n5. Submit the self-declaration and required documents for state nodal verification.",
+    "source_url": "https://www.myscheme.gov.in/schemes/pm-kisan",
+    "structured_slots": {
+      "age_min": 18,
+      "age_max": 75,
+      "occupation": [
+        "farmer"
+      ],
+      "state": "All",
+      "income_max": null,
+      "category": [
+        "All"
+      ]
+    }
+  },
+  {
+    "id": "pmjay-ayushman",
+    "name": "Ayushman Bharat - Pradhan Mantri Jan Arogya Yojana (PM-JAY)",
+    "eligibility_text": "Households identified as deprived rural families or occupational categories of urban workers' families as per the latest Socio-Economic Caste Census (SECC) data or active Ration Card (NFSA / BPL). No restriction on family size or age (0-100 years). Annual household income typically below ₹2,50,000. All states except West Bengal and Delhi.",
+    "benefits": "Cashless and paperless access to health services up to ₹5,00,000 per family per year for secondary and tertiary care hospitalization across all empaneled public and private hospitals.",
+    "application_process": "1. Check eligibility on mera.pmjay.gov.in or visit nearest empaneled hospital or CSC kiosk.\n2. Present Aadhaar card, Ration card, or PM-JAY letter to the Ayushman Mitra.\n3. Complete biometric e-KYC authentication.\n4. Receive the Golden Ayushman Card on spot or download digitally.",
+    "source_url": "https://www.myscheme.gov.in/schemes/pmjay",
+    "structured_slots": {
+      "age_min": null,
+      "age_max": null,
+      "occupation": [
+        "unorganized_worker"
+      ],
+      "state": "Delhi",
+      "income_max": 250000,
+      "category": [
+        "BPL"
+      ]
+    }
+  },
+  {
+    "id": "pmay-g",
+    "name": "Pradhan Mantri Awas Yojana - Gramin (PMAY-G)",
+    "eligibility_text": "Houseless families or families living in kutcha/dilapidated houses in rural areas. Beneficiary selection based on SECC housing deprivation parameters. Household must not own a pucca house anywhere in India. Annual family income below ₹3,00,000. Priority given to SC, ST, Minorities, and Women-headed households.",
+    "benefits": "Financial assistance of ₹1,20,000 in plains and ₹1,30,000 in hilly/difficult/IAP areas for construction of a pucca house with basic amenities including toilet, LPG connection, electricity, and drinking water.",
+    "application_process": "1. Selection is done by the Gram Sabha from the verified PMAY-G permanent waitlist.\n2. Register applicant details via AwaasSoft / AwaasApp through the local Gram Panchayat Secretary.\n3. Provide Aadhaar, bank details, and consent.\n4. Geo-tagged photographs of existing shelter and construction progress uploaded for phased direct benefit transfers.",
+    "source_url": "https://www.myscheme.gov.in/schemes/pmay-g",
+    "structured_slots": {
+      "age_min": null,
+      "age_max": null,
+      "occupation": [
+        "all"
+      ],
+      "state": "All",
+      "income_max": 300000,
+      "category": [
+        "SC",
+        "ST",
+        "BPL",
+        "Women"
+      ]
+    }
+  },
+  {
+    "id": "pm-mudra-yojana",
+    "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+    "eligibility_text": "Any Indian citizen who has a business plan for a non-farm sector income generating activity such as manufacturing, processing, trading or service sector, aged 18 to 65 years. No specific minimum income requirement. Available to micro-entrepreneurs, artisans, shopkeepers, and self-employed individuals across all states.",
+    "benefits": "Collateral-free institutional micro-loans up to ₹10,00,000 across three categories: Shishu (loans up to ₹50,000), Kishore (loans ₹50,000 to ₹5,00,000), and Tarun (loans ₹5,00,000 to ₹10,00,000) at affordable interest rates.",
+    "application_process": "1. Prepare business plan and identify loan category (Shishu, Kishore, Tarun).\n2. Visit any commercial bank, RRB, Small Finance Bank, or apply online via Udyamimitra portal.\n3. Submit loan application along with identity proof, address proof, passport photos, and quotation/project report.\n4. Sanction and disbursement directly to bank account with Mudra Debit Card.",
+    "source_url": "https://www.myscheme.gov.in/schemes/pmmy",
+    "structured_slots": {
+      "age_min": 18,
+      "age_max": 65,
+      "occupation": [
+        "unorganized_worker",
+        "entrepreneur"
+      ],
+      "state": "All",
+      "income_max": 1800000,
+      "category": [
+        "All"
+      ]
+    }
+  },
+  {
+    "id": "atal-pension-yojana",
+    "name": "Atal Pension Yojana (APY)",
+    "eligibility_text": "All Indian citizens between the ages of 18 and 40 years holding a savings bank account or post office savings account. Applicant must not be an income taxpayer as per revised guidelines since October 2022. Open to all occupations with special focus on unorganized sector workers.",
+    "benefits": "Guaranteed minimum monthly pension of ₹1,000, ₹2,000, ₹3,000, ₹4,000 or ₹5,000 to the subscriber upon attaining the age of 60 years, depending on the contribution amount. Same pension to spouse upon subscriber's demise.",
+    "application_process": "1. Approach the bank branch or post office where you hold a savings bank account.\n2. Fill out the APY registration form specifying chosen pension amount (₹1,000 to ₹5,000).\n3. Provide Aadhaar number and nominate a spouse/nominee.\n4. Set up auto-debit facility for monthly/quarterly contribution.",
+    "source_url": "https://www.myscheme.gov.in/schemes/apy",
+    "structured_slots": {
+      "age_min": null,
+      "age_max": null,
+      "occupation": [
+        "unorganized_worker"
+      ],
+      "state": "All",
+      "income_max": 2022,
+      "category": [
+        "All"
+      ]
+    }
+  },
+  {
+    "id": "sukanya-samriddhi-yojana",
+    "name": "Sukanya Samriddhi Yojana (SSY)",
+    "eligibility_text": "A girl child who is a resident Indian citizen from birth up to the age of 10 years. An account can be opened by the natural or legal guardian in the name of the girl child. Maximum of two girl children per family (or three in case of twin birth in second order).",
+    "benefits": "High sovereign-guaranteed interest rate (currently 8.2% p.a.), compounded annually. Complete tax exemption under Section 80C on investment, interest earned, and maturity proceeds (EEE tax status). Partial withdrawal up to 50% allowed for higher education after age 18.",
+    "application_process": "1. Visit any authorized commercial bank or post office.\n2. Submit account opening form (Form-1) along with Girl Child's Birth Certificate.\n3. Provide identity and address proof of the guardian (Aadhaar / PAN / Voter ID).\n4. Deposit initial minimum amount (minimum ₹250, maximum ₹1.5 lakh per financial year).",
+    "source_url": "https://www.myscheme.gov.in/schemes/ssy",
+    "structured_slots": {
+      "age_min": null,
+      "age_max": null,
+      "occupation": [
+        "all"
+      ],
+      "state": "All",
+      "income_max": null,
+      "category": [
+        "Women"
+      ]
+    }
+  },
+  {
+    "id": "pm-svanidhi",
+    "name": "PM Street Vendor's AtmaNirbhar Nidhi (PM SVANidhi)",
+    "eligibility_text": "Urban street vendors, hawkers, and informal sellers engaged in vending in urban areas on or before March 24, 2020. Vendors must possess a Certificate of Vending or Identity Card issued by Urban Local Bodies (ULBs) or Recommendation Letter from ULB / Town Vending Committee (TVC). Age 18 to 65 years.",
+    "benefits": "Initial working capital loan of up to ₹10,000 (1st tranche), ₹20,000 (2nd tranche upon timely repayment), and ₹50,000 (3rd tranche). Interest subsidy @ 7% per annum on timely repayment and cashback up to ₹1,200 per year on digital transactions.",
+    "application_process": "1. Check name in ULB vending survey list or obtain Letter of Recommendation (LoR).\n2. Apply online on pmsvanidhi.mohua.gov.in or through CSC / Banking Correspondent.\n3. Submit Aadhaar, ULB ID/LoR, and bank account details.\n4. Digital sanction and direct credit to vendor's savings account within 7 days.",
+    "source_url": "https://www.myscheme.gov.in/schemes/pm-svanidhi",
+    "structured_slots": {
+      "age_min": 18,
+      "age_max": 65,
+      "occupation": [
+        "street_vendor",
+        "unorganized_worker"
+      ],
+      "state": "All",
+      "income_max": null,
+      "category": [
+        "All"
+      ]
+    }
+  },
+  {
+    "id": "post-matric-scholarship-sc",
+    "name": "Post Matric Scholarships Scheme for Scheduled Castes (SC)",
+    "eligibility_text": "Students belonging to Scheduled Caste (SC) category who are permanent residents of India. Must be pursuing recognized post-matriculation or post-secondary courses in recognized institutions. Total annual family income from all sources must not exceed ₹2,50,000 per annum. Age generally between 15 and 35 years.",
+    "benefits": "Full compulsory non-refundable fees (tuition, examination, registration) reimbursed plus monthly academic maintenance allowance up to ₹13,500 per year for hostellers and ₹7,000 for day scholars paid via Aadhaar-enabled DBT.",
+    "application_process": "1. Register on the National Scholarship Portal (scholarships.gov.in) or state scholarship portal.\n2. Complete student KYC with Aadhaar and enter demographic details.\n3. Upload SC Caste Certificate, Income Certificate from competent authority, previous marksheets, and fee receipt.\n4. Institute verifies application online followed by State Welfare Department approval and DBT release.",
+    "source_url": "https://www.myscheme.gov.in/schemes/post-matric-sc",
+    "structured_slots": {
+      "age_min": 15,
+      "age_max": 35,
+      "occupation": [
+        "student"
+      ],
+      "state": "All",
+      "income_max": 250000,
+      "category": [
+        "SC"
+      ]
+    }
+  },
+  {
+    "id": "aaby-assam",
+    "name": "Aam Aadmi Bima Yojana (AABY)",
+    "eligibility_text": "Head of the family or one earning member of below poverty line (BPL) or marginally above poverty line rural/urban unorganized household. Age between 18 and 59 years. Must be engaged in one of the 48 identified vocational/unorganized occupational groups (agricultural labor, weavers, carpenters, construction, handloom, etc.).",
+    "benefits": "Life insurance coverage of ₹30,000 upon natural death, ₹75,000 upon accidental death or permanent total disability, and ₹37,500 upon permanent partial disability. Additional free scholarship of ₹100/month per child for up to two children studying in 9th to 12th standard (Shiksha Sahayog Yojana).",
+    "application_process": "1. Contact the designated Nodal Agency (State Government department or registered NGO/SHG federation).\n2. Fill out member enrollment form.\n3. Submit age proof (Ration card / Voter card / Aadhaar), BPL proof, and occupation certificate.\n4. Nominal 50% premium subsidized by Central Social Security Fund, remainder by State Govt.",
+    "source_url": "https://www.myscheme.gov.in/schemes/aaby",
+    "structured_slots": {
+      "age_min": 18,
+      "age_max": 59,
+      "occupation": [
+        "farmer",
+        "unorganized_worker"
+      ],
+      "state": "All",
+      "income_max": null,
+      "category": [
+        "BPL"
+      ]
+    }
+  },
+  {
+    "id": "maharashtra-shravanbal-pension",
+    "name": "Shravanbal Seva State Pension Scheme (Maharashtra)",
+    "eligibility_text": "Destitute and elderly persons aged 65 years and above who are permanent residents of Maharashtra State for at least 15 years. Annual family income must not exceed ₹21,000 per annum (Category A) or beneficiary must be included in the Central BPL list (Category B).",
+    "benefits": "Monthly financial pension assistance of ₹1,500 per month credited directly to the beneficiary's bank account through DBT to support basic living expenses.",
+    "application_process": "1. Obtain application form from the local Tehsil office, Setu Kendra, or apply online on Aaple Sarkar portal (aaplesarkar.mahaonline.gov.in).\n2. Attach Domicile Certificate (15 years in Maharashtra), Age Proof, Income Certificate issued by Tehsildar, and Aadhaar card.\n3. Submit to the Taluka Executive Magistrate / Tehsildar for verification and approval.",
+    "source_url": "https://www.myscheme.gov.in/schemes/shravanbal-pension",
+    "structured_slots": {
+      "age_min": 15,
+      "age_max": null,
+      "occupation": [
+        "all"
+      ],
+      "state": "Maharashtra",
+      "income_max": 21000,
+      "category": [
+        "BPL",
+        "Senior Citizen"
+      ]
+    }
+  }
+]
